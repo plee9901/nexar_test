@@ -1,0 +1,53 @@
+[2024-08-18T10:13:28.501+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-08-18T10:13:28.563+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: data_pipeline_v1.download_task scheduled__2024-08-17T00:00:00+00:00 [queued]>
+[2024-08-18T10:13:28.582+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: data_pipeline_v1.download_task scheduled__2024-08-17T00:00:00+00:00 [queued]>
+[2024-08-18T10:13:28.583+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 4
+[2024-08-18T10:13:28.618+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): download_task> on 2024-08-17 00:00:00+00:00
+[2024-08-18T10:13:28.635+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'data_pipeline_v1', 'download_task', 'scheduled__2024-08-17T00:00:00+00:00', '--job-id', '8', '--raw', '--subdir', 'DAGS_FOLDER/dag_python.py', '--cfg-path', '/tmp/tmpx1og5qp0']
+[2024-08-18T10:13:28.656+0000] {standard_task_runner.py:91} INFO - Job 8: Subtask download_task
+[2024-08-18T10:13:28.670+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=250) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2024-08-18T10:13:28.673+0000] {standard_task_runner.py:63} INFO - Started process 262 to run task
+[2024-08-18T10:13:29.104+0000] {task_command.py:426} INFO - Running <TaskInstance: data_pipeline_v1.download_task scheduled__2024-08-17T00:00:00+00:00 [running]> on host 481ee775c62e
+[2024-08-18T10:13:30.649+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='phuclee' AIRFLOW_CTX_DAG_ID='data_pipeline_v1' AIRFLOW_CTX_TASK_ID='download_task' AIRFLOW_CTX_EXECUTION_DATE='2024-08-17T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2024-08-17T00:00:00+00:00'
+[2024-08-18T10:13:30.651+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-08-18T10:13:30.754+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-08-18T10:13:30.758+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 401, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 235, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 252, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/dag_python.py", line 30, in download_data
+    response = requests.get(url)
+               ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/requests/api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/requests/sessions.py", line 575, in request
+    prep = self.prepare_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/requests/sessions.py", line 486, in prepare_request
+    p.prepare(
+  File "/home/airflow/.local/lib/python3.12/site-packages/requests/models.py", line 368, in prepare
+    self.prepare_url(url, params)
+  File "/home/airflow/.local/lib/python3.12/site-packages/requests/models.py", line 439, in prepare_url
+    raise MissingSchema(
+requests.exceptions.MissingSchema: Invalid URL '': No scheme supplied. Perhaps you meant https://?
+[2024-08-18T10:13:30.813+0000] {taskinstance.py:1206} INFO - Marking task as UP_FOR_RETRY. dag_id=data_pipeline_v1, task_id=download_task, run_id=scheduled__2024-08-17T00:00:00+00:00, execution_date=20240817T000000, start_date=20240818T101328, end_date=20240818T101330
+[2024-08-18T10:13:30.877+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 8 for task download_task (Invalid URL '': No scheme supplied. Perhaps you meant https://?; 262)
+[2024-08-18T10:13:30.914+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 1
+[2024-08-18T10:13:30.937+0000] {local_task_job_runner.py:222} INFO - ::endgroup::
