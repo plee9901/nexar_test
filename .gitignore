@@ -1,6 +1,11 @@
+__pycache__/
 .venv
 credentials-python-storage.json
 something_may_important.txt
 solid-authority-432802-q8-8991d0dd48ab.json
-test.ipynb
+bruh.ipynb
 test.py
+skilful-answer-432616-m6-113f85ee5b05.json
+.env
+!/.gitignore
+logs/

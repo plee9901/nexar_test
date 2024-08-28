@@ -39,8 +39,8 @@ dag = DAG(
 
 def convert_and_compress_data():
 
-    input_file = 'data/data.ndjson'
-    output_file = 'data/data.csv.gz'
+    input_file = '/opt/airflow/data/data.ndjson'
+    output_file = '/opt/airflow/data/data.csv.gz'
 
     df = pd.read_json(input_file, lines=True)
     df.to_csv(output_file, index=False,  compression='gzip')
@@ -81,6 +81,27 @@ def load_csv_from_gcs_to_bigquery():
 
     load_job.result()
 
+def load_csv_from_local_to_bigquery():
+
+    dataset_id = "skilful-answer-432616-m6.nexar_test"
+    table_id = "twitter"
+
+    client = bigquery.Client.from_service_account_json(
+        json_credentials_path='/opt/airflow/credentials-python-storage.json')
+
+    table_ref = client.dataset(dataset_id).table(table_id)
+
+    job_config = bigquery.LoadJobConfig(
+        source_format=bigquery.SourceFormat.CSV,
+        skip_leading_rows=1,
+        autodetect=True,
+    )
+
+    with open("/opt/airflow/data/data.csv.gz", "rb") as source_file:
+        load_job = client.load_table_from_file(source_file, table_ref, job_config=job_config)
+
+    load_job.result()
+
 
 convert_compress_task = PythonOperator(
     task_id='convert_task',
@@ -88,15 +109,9 @@ convert_compress_task = PythonOperator(
     dag=dag
 )
 
-upload_task = PythonOperator(
-    task_id='upload_task',
-    python_callable=upload_to_gcs,
-    dag=dag
-)
-
-load_bigquery_task = PythonOperator(
-    task_id='load_to_bigquery',
-    python_callable=load_csv_from_gcs_to_bigquery,
-    dag=dag
-)
-convert_compress_task >> upload_task >> load_bigquery_task
+# load_to_bq_task = PythonOperator(
+#     task_id="load_to_bq",
+#     python_callable=load_csv_from_local_to_bigquery,
+#     dag=dag
+# )
+convert_compress_task
